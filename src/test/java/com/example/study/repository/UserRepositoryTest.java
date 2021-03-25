@@ -6,6 +6,7 @@ import com.example.study.model.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -36,6 +37,7 @@ public class UserRepositoryTest extends StudyApplicationTests {
     }
 
     @Test
+    @Transactional
     public void update() {
         Optional<User> user = userRepository.findById(1L);
         user.ifPresent(selectedUser->
@@ -46,4 +48,17 @@ public class UserRepositoryTest extends StudyApplicationTests {
         );
     }
 
+    @Test
+    public void delete() {
+        Optional<User> user = userRepository.findById(1L);
+        user.ifPresent(selectedUser->
+                    userRepository.delete(selectedUser)
+        );
+
+        Optional<User> deletedUser = userRepository.findById(1L);
+        if(deletedUser.isPresent())
+            System.out.println(deletedUser);
+        else
+            System.out.println("NO DATA");
+    }
 }
