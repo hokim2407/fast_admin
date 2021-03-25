@@ -18,7 +18,7 @@ public class User {
     private Long id;
     private String account;
     private String email;
-    private String phone;
+    private String phoneNumber;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;
