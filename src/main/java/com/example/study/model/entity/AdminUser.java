@@ -1,31 +1,40 @@
 package com.example.study.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"orderGroup", "item"})
-@Builder
-@Accessors(chain = true)
-public class OrderDetail {
+@EntityListeners(AuditingEntityListener.class)
+@Builder //줄줄이 선언 가능
+@Accessors(chain = true)//줄줄이 함수사용 가능
+public class AdminUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String account;
+    private String password;
     private String status;
-    private LocalDateTime arrivalDate;
-    private Integer quantity;
-    private BigDecimal totalPrice;
+    private String role;
+    private LocalDateTime lastLoginAt;
+    private LocalDateTime passwordUpdatedAt;
+    private int loginFailCount;
+    private LocalDateTime registeredAt;
+    private LocalDateTime unregisteredAt;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -37,11 +46,4 @@ public class OrderDetail {
 
     @LastModifiedBy
     private String updatedBy;
-
-    @ManyToOne
-    private OrderGroup orderGroup;
-
-    @ManyToOne
-    private Item item;
-
 }

@@ -19,11 +19,31 @@ public class OrderDetailRepositoryTest extends StudyApplicationTests {
     @Test
     public void create() {
         OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setOrderAt(LocalDateTime.now());
-        orderDetail.setItemId(7L);
-        orderDetail.setUserId(1L);
         OrderDetail saved = orderDetailRepository.save(orderDetail);
         System.out.println(saved);
     }
-   
+    @Test
+    public void read(@RequestParam Long id) {
+        Optional<OrderDetail> orderDetail =  orderDetailRepository.findById(id);
+        orderDetail.ifPresent(SelectedOrder -> { System.out.println(SelectedOrder);});
+
+    }
+    @Test
+    public void update() {
+
+        Optional <OrderDetail> orderDetail =  orderDetailRepository.findById(1L);
+        orderDetail.ifPresent(SelectedOrder -> {
+            orderDetailRepository.save(SelectedOrder);
+        });
+    }
+    @Test
+    @Transactional//롤백시켜줌
+    public void delete() {
+        Optional <OrderDetail> orderDetail =  orderDetailRepository.findById(1L);
+
+        orderDetail.ifPresent(SelectedOrder -> {
+            orderDetailRepository.delete(SelectedOrder);
+
+        });
+    }
 }

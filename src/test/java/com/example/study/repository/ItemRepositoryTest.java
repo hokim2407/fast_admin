@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,9 @@ public class ItemRepositoryTest extends StudyApplicationTests {
     public void create() {
         Item item = new Item();
         item.setName("Mac m1");
-        item.setPrice(3200000);
+
+        item.setTitle("notebook");
+        item.setPrice(new BigDecimal(3200000));
         item.setContent("애플 노트북");
         itemRepository.save(item);
     }
@@ -35,7 +38,7 @@ public class ItemRepositoryTest extends StudyApplicationTests {
 
         Optional <Item> item =  itemRepository.findById(1L);
         item.ifPresent(selectedItem -> {
-            selectedItem.setPrice(1500000);
+            selectedItem.setPrice(new BigDecimal(1500000));
             itemRepository.save(selectedItem);
         });
     }

@@ -1,21 +1,55 @@
 package com.example.study.model.entity;
 
+import com.example.study.model.enums.ItemStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Accessors(chain = true)//줄줄이 함수사용 가능
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
+    private ItemStatus status;
     private String name;
-    private Integer price;
+    private String title;
     private String content;
+    private BigDecimal price;
+    private String brandName;
+    private LocalDateTime registeredAt;
+    private LocalDateTime unregisteredAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
+    @CreatedBy
+    private String createdBy;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    @LastModifiedBy
+    private String updatedBy;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    private  List<OrderDetail> orderDetailList;
+
+    @ManyToOne
+    private  Partner partner;
 }

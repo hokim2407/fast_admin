@@ -28,13 +28,13 @@ public class UserRepositoryTest extends StudyApplicationTests {
     }
 
     @Test
-    public void read() {
+    public void read( ) {
         Optional<User> user = userRepository.findById(1L);
-        user.ifPresent(selecteduser->
-        System.out.println(selecteduser)
-        );
+        user.ifPresent(selectedUser -> {
 
+        });
     }
+
 
     @Test
     @Transactional
