@@ -42,7 +42,9 @@ public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiReq
 
     @Override
     public Header<OrderGroupApiResponse> read(Long id) {
-        return null;
+        return orderGroupRepository.findById(id)
+                .map(data -> Header.OK(response(data)))
+                .orElseGet(() -> Header.ERROR("NO DATA"));
     }
 
     @Override
