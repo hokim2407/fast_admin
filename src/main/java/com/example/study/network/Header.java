@@ -20,6 +20,8 @@ public class Header <T>{
 
     private String description;
 
+    private Pagination pagination;
+
     private T data;
 
     public static <T> Header<T> OK()
@@ -40,6 +42,18 @@ public class Header <T>{
                 .data(data)
                 .build();
     }
+
+    public static <T> Header<T> OK(T data,Pagination pagination)
+    {
+        return (Header<T>) Header.builder()
+                .transactionTime(LocalDateTime.now())
+                .resultCode("OK")
+                .description("OK")
+                .data(data)
+                .pagination(pagination)
+                .build();
+    }
+
 
     public static <T> Header<T> ERROR(String description)
     {

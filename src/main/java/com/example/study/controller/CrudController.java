@@ -40,4 +40,9 @@ public abstract class CrudController<Req, Res,Entity> implements CrudInterface<R
         return baseService.delete(id);
     }
 
+    @GetMapping("")
+    public Header<List<Res>> search(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
+
+        return baseService.search(pageable);
+    }
 }

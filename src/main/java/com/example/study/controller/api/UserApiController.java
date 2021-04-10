@@ -7,6 +7,7 @@ import com.example.study.model.entity.User;
 import com.example.study.network.Header;
 import com.example.study.network.request.UserApiRequest;
 import com.example.study.network.response.UserApiResponse;
+import com.example.study.network.response.UserOrderInfoApiResponse;
 import com.example.study.service.UserApiLogicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import javax.annotation.PostConstruct;
 @RestController
 @RequestMapping("/api/user")
 public class UserApiController extends CrudController<UserApiRequest, UserApiResponse, User> {
-
+    @GetMapping("/{id}/orderInfo")
+    public Header<UserOrderInfoApiResponse> shoppingInfo(@PathVariable Long id){
+        return ((UserApiLogicService)baseService).orderInfo(id);
+    }
 }
 

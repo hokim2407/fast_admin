@@ -7,15 +7,25 @@ import com.example.study.model.enums.UserStatus;
 import com.example.study.model.repository.UserRepository;
 import com.example.study.network.Header;
 import com.example.study.network.request.UserApiRequest;
+import com.example.study.network.response.ItemApiResponse;
+import com.example.study.network.response.OrderGroupApiResponse;
 import com.example.study.network.response.UserApiResponse;
+import com.example.study.network.response.UserOrderInfoApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse,User> {
 
+
+    @Autowired
+    private OrderGroupApiLogicService orderGroupApiLogicService;
+    @Autowired
+    private ItemApiLogicService itemApiLogicService;
 
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
@@ -55,6 +65,34 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
 
+
+    public Header<UserOrderInfoApiResponse> orderInfo(Long id) {
+        //user
+        User user = baseRepository.getOne(id);
+        UserApiResponse userApi = response(user);
+
+        //orderGroup
+        List<OrderGroupApiResponse> orderGroupApiDataList = user.getOrderGroupList().stream()
+                .map(orderGroup -> {
+                    OrderGroupApiResponse orderGroupApiData = orderGroupApiLogicService.response(orderGroup);
+
+                    //item
+                    List<ItemApiResponse> itemApiDataList = orderGroup.getOrderDetailList().stream()
+                            .map(orderDetail -> orderDetail.getItem())
+                            .map(item -> itemApiLogicService.response(item))
+                            .collect(Collectors.toList());
+                    orderGroupApiData.setItemList(itemApiDataList);
+                    System.out.println(orderGroupApiData.getItemList());
+                    return orderGroupApiData;
+                })
+                .collect(Collectors.toList());
+        userApi.setOrderGroupList(orderGroupApiDataList);
+        UserOrderInfoApiResponse shoppingInfoApiData = UserOrderInfoApiResponse.builder()
+                .userApiResponse(userApi)
+                .build();
+
+        return Header.OK(shoppingInfoApiData);
+    }
 
     public UserApiResponse response(User user) {
         UserApiResponse userApiResponse = UserApiResponse.builder()
