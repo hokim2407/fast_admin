@@ -1,6 +1,8 @@
 package com.example.study.network.request;
 
 import com.example.study.model.enums.ItemStatus;
+import com.example.study.network.response.OrderDetailApiResponse;
+import com.example.study.network.response.OrderGroupApiResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,4 +27,7 @@ public class ItemApiRequest {
     private LocalDateTime registeredAt;
     private LocalDateTime unregisteredAt;
     private Long partnerId;
+
+    private List<OrderDetailApiResponse> orderDetailList;
+
 }

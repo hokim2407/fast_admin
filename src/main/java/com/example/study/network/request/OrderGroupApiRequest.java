@@ -1,6 +1,7 @@
 package com.example.study.network.request;
 
 import com.example.study.model.enums.OrderType;
+import com.example.study.network.response.ItemApiResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,5 +27,7 @@ public class OrderGroupApiRequest {
     private LocalDateTime orderAt;
     private LocalDateTime arrivalDate;
     private Long userId;
+
+    private List<ItemApiResponse> itemList;
 
 }

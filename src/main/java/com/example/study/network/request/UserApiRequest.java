@@ -1,6 +1,7 @@
 package com.example.study.network.request;
 
 import com.example.study.model.enums.UserStatus;
+import com.example.study.network.response.OrderGroupApiResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +25,5 @@ public class UserApiRequest {
     private LocalDateTime unregisteredAt;
 
 
+    private List<OrderGroupApiResponse> orderGroupList;
 }
