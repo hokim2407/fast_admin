@@ -49,7 +49,24 @@ public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiReq
 
     @Override
     public Header<OrderGroupApiResponse> update(Header<OrderGroupApiRequest> request) {
-        return null;
+        OrderGroupApiRequest apiData = request.getData();
+        Optional<OrderGroup> optional = orderGroupRepository.findById(apiData.getId());
+        return optional.map(data -> data
+                    .setArrivalDate(apiData.getArrivalDate())
+                    .setOrderAt(apiData.getOrderAt())
+                    .setOrderType(apiData.getOrderType())
+                    .setPaymentType(apiData.getPaymentType())
+                    .setRevAddress(apiData.getRevAddress())
+                    .setRevName(apiData.getRevName())
+                    .setStatus(apiData.getStatus())
+                    .setTotalPrice(apiData.getTotalPrice())
+                    .setTotalQuantity(apiData.getTotalQuantity())
+                    .setUser(userRepository.getOne(apiData.getUserId()))
+                )
+                .map(data -> orderGroupRepository.save(data))
+                .map(data -> Header.OK(response(data)))
+                .orElseGet(() -> Header.ERROR("NO DATA"))
+                ;
     }
 
     @Override
