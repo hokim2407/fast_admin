@@ -1,4 +1,4 @@
-package com.example.study.network.response.request;
+package com.example.study.network.response;
 
 import com.example.study.model.enums.UserStatus;
 import lombok.AllArgsConstructor;

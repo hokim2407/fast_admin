@@ -5,7 +5,7 @@ import com.example.study.model.entity.Item;
 import com.example.study.model.repository.ItemRepository;
 import com.example.study.network.Header;
 import com.example.study.network.request.ItemApiRequest;
-import com.example.study.network.response.request.ItemApiResponse;
+import com.example.study.network.response.ItemApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;

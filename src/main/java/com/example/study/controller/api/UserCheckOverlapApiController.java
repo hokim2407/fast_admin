@@ -1,12 +1,11 @@
 package com.example.study.controller.api;
 
 
-import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.User;
 import com.example.study.model.repository.UserRepository;
 import com.example.study.network.Header;
 import com.example.study.network.request.UserApiRequest;
-import com.example.study.network.response.request.UserApiResponse;
+import com.example.study.network.response.UserApiResponse;
 import com.example.study.service.UserApiLogicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,13 +7,11 @@ import com.example.study.model.enums.UserStatus;
 import com.example.study.model.repository.UserRepository;
 import com.example.study.network.Header;
 import com.example.study.network.request.UserApiRequest;
-import com.example.study.network.response.request.UserApiResponse;
+import com.example.study.network.response.UserApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserApiLogicService implements CrudInterface<UserApiRequest, UserApiResponse> {
