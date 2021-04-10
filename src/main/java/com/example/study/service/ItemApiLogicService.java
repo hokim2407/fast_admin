@@ -3,6 +3,7 @@ package com.example.study.service;
 import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.Item;
 import com.example.study.model.repository.ItemRepository;
+import com.example.study.model.repository.PartnerRepository;
 import com.example.study.network.Header;
 import com.example.study.network.request.ItemApiRequest;
 import com.example.study.network.response.ItemApiResponse;
@@ -11,10 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemApiResponse> {
+public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
 
     @Autowired
-    private ItemRepository itemRepository;
+    private PartnerRepository partnerRepository;
     @Override
     public Header<ItemApiResponse> create(Header<ItemApiRequest> request)  {
 
@@ -27,23 +28,17 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
                 .status(apiData.getStatus())
                 .content(apiData.getContent())
                 .registeredAt(apiData.getRegisteredAt())
+                .partner(partnerRepository.getOne(apiData.getPartnerId()))
                 .build();
-        Item newItem = itemRepository.save(item);
+        Item newItem = baseRepository.save(item);
         return Header.OK(response(newItem));
     }
 
-    @Override
-    public Header<ItemApiResponse> read(Long id) {
-        System.out.println(id);
-        return itemRepository.findById(id)
-                .map(item -> Header.OK(response(item)))
-                .orElseGet(() -> Header.ERROR("NO DATA"));
-    }
 
     @Override
     public Header<ItemApiResponse> update(Header<ItemApiRequest> request) {
         ItemApiRequest apiData = request.getData();
-        Optional<Item> optional = itemRepository.findById(apiData.getId());
+        Optional<Item> optional = baseRepository.findById(apiData.getId());
         return optional.map(item ->
                 item.setName(apiData.getName())
                         .setTitle(apiData.getTitle())
@@ -53,22 +48,14 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
                         .setContent(apiData.getContent())
                         .setRegisteredAt(apiData.getRegisteredAt())
                         .setUnregisteredAt(apiData.getUnregisteredAt())
+                        .setPartner(partnerRepository.getOne(apiData.getPartnerId()))
                 )
-                .map(data -> itemRepository.save(data))
+                .map(data -> baseRepository.save(data))
                 .map(data -> Header.OK(response(data)))
                 .orElseGet(() -> Header.ERROR("NO DATA"));
 
     }
 
-    @Override
-    public Header delete(Long id) {
-        Optional<Item> optional = itemRepository.findById(id);
-        return optional.map(data -> {
-            itemRepository.delete(data);
-            return Header.OK();
-        }).orElseGet(()->Header.ERROR("NO DATA"));
-
-    }
 
     public ItemApiResponse response(Item apiData) {
 

@@ -3,6 +3,7 @@ package com.example.study.controller.api;
 
 import com.example.study.controller.CrudController;
 import com.example.study.ifs.CrudInterface;
+import com.example.study.model.entity.User;
 import com.example.study.network.Header;
 import com.example.study.network.request.UserApiRequest;
 import com.example.study.network.response.UserApiResponse;
@@ -17,14 +18,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @RestController
 @RequestMapping("/api/user")
-public class UserApiController extends CrudController<UserApiRequest, UserApiResponse> {
+public class UserApiController extends CrudController<UserApiRequest, UserApiResponse, User> {
 
-    @Autowired
-    private UserApiLogicService userApiLogicService;
-
-    @PostConstruct
-    public void init(){
-        this.baseService = userApiLogicService;
-    }
 }
 

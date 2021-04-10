@@ -3,6 +3,7 @@ package com.example.study.controller;
 
 import com.example.study.ifs.CrudInterface;
 import com.example.study.network.Header;
+import com.example.study.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public abstract class CrudController<Req, Res> implements CrudInterface<Req, Res> {
- protected  CrudInterface<Req, Res> baseService;
+public abstract class CrudController<Req, Res,Entity> implements CrudInterface<Req, Res> {
+ @Autowired(required = false)
+    protected BaseService<Req, Res,Entity> baseService;
 
     @Override
     @PostMapping("")

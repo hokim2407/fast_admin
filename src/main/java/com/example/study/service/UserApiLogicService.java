@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserApiLogicService implements CrudInterface<UserApiRequest, UserApiResponse> {
-
-    @Autowired
-    private UserRepository userRepository;
+public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse,User> {
 
 
     @Override
@@ -31,21 +28,15 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
                 .email(userApiData.getEmail())
                 .registeredAt(userApiData.getRegisteredAt())
                 .build();
-        User newUser = userRepository.save(user);
+        User newUser = baseRepository.save(user);
         return Header.OK(response(newUser));
     }
 
-    @Override
-    public Header<UserApiResponse> read(Long id) {
-        return userRepository.findById(id)
-                .map(user -> Header.OK(response(user)))
-                .orElseGet(() -> Header.ERROR("NO DATA"));
-    }
 
     @Override
     public Header<UserApiResponse> update(Header<UserApiRequest> request) {
         UserApiRequest userApiData = request.getData();
-        Optional<User> user = userRepository.findById(userApiData.getId());
+        Optional<User> user = baseRepository.findById(userApiData.getId());
         return user
                 .map(data -> data
                         .setAccount(userApiData.getAccount())
@@ -57,21 +48,12 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
                         .setUnregisteredAt(userApiData.getUnregisteredAt())
 
                 )
-                .map(data -> userRepository.save(data))
+                .map(data -> baseRepository.save(data))
                 .map(data -> Header.OK(response(data)))
                 .orElseGet(() -> Header.ERROR("NO DATA"));
 
     }
 
-    @Override
-    public Header delete(Long id) {
-        Optional<User> optional = userRepository.findById(id);
-        return optional.map(data -> {
-            userRepository.delete(data);
-            return Header.OK();
-        }).orElseGet(()->Header.ERROR("NO DATA"));
-
-    }
 
 
     public UserApiResponse response(User user) {
