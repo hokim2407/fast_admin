@@ -35,7 +35,7 @@ public class OrderGroupApiController implements CrudInterface<OrderGroupApiReque
     }
 
     @Override
-    @GetMapping("")
+    @DeleteMapping("{id}")
     public Header<OrderGroupApiResponse> delete(@PathVariable Long id) {
         return orderGroupApiLogicService.delete(id);
     }

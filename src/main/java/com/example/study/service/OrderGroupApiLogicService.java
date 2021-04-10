@@ -3,6 +3,7 @@ package com.example.study.service;
 
 import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.OrderGroup;
+import com.example.study.model.entity.User;
 import com.example.study.model.repository.OrderGroupRepository;
 import com.example.study.model.repository.UserRepository;
 import com.example.study.network.Header;
@@ -70,8 +71,13 @@ public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiReq
     }
 
     @Override
-    public Header<OrderGroupApiResponse> delete(Long id) {
-        return null;
+    public Header delete(Long id) {
+        Optional<OrderGroup> optional = orderGroupRepository.findById(id);
+        return optional.map(data -> {
+            orderGroupRepository.delete(data);
+            return Header.OK();
+        }).orElseGet(()->Header.ERROR("NO DATA"));
+
     }
 
 
