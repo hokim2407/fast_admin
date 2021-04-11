@@ -18,6 +18,8 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SettlementLogicService settlementLogicService;
 
     @Override
     public Header<OrderGroupApiResponse> create(Header<OrderGroupApiRequest> request) {
@@ -35,6 +37,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                 .user(userRepository.getOne(apiData.getUserId()))
                 .build();
         OrderGroup newOrderGroup = baseRepository.save(orderGroup);
+        settlementLogicService.update(apiData.getUserId(), apiData.getTotalPrice());
         return Header.OK(response(newOrderGroup));
     }
 

@@ -19,13 +19,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse,User> {
+public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse, User> {
 
 
     @Autowired
     private OrderGroupApiLogicService orderGroupApiLogicService;
     @Autowired
     private ItemApiLogicService itemApiLogicService;
+    @Autowired
+    private SettlementLogicService settlementLogicService;
 
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
@@ -39,6 +41,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 .registeredAt(userApiData.getRegisteredAt())
                 .build();
         User newUser = baseRepository.save(user);
+        settlementLogicService.create();
         return Header.OK(response(newUser));
     }
 
@@ -63,7 +66,6 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 .orElseGet(() -> Header.ERROR("NO DATA"));
 
     }
-
 
 
     public Header<UserOrderInfoApiResponse> orderInfo(Long id) {
@@ -92,6 +94,16 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 .build();
 
         return Header.OK(shoppingInfoApiData);
+    }
+
+    public Header delete(Long id) {
+        Optional<User> optional = baseRepository.findById(id);
+        return optional.map(data -> {
+            baseRepository.delete(data);
+            settlementLogicService.delete(id);
+            return Header.OK();
+        }).orElseGet(()->Header.ERROR("NO DATA"));
+
     }
 
     public UserApiResponse response(User user) {
